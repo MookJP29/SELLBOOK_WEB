@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <title>SellBook - หน้าแรก</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+    <h1>ยินดีต้อนรับสู่ SellBook</h1>
+    {% if session.get('user_id') %}
+    <div class="userbar" style="display:flex; align-items:center; gap:18px; background:#e0e7ff; border-radius:18px; box-shadow:0 2px 12px #b3b3d1; padding:16px 32px; margin-bottom:18px; flex-wrap:wrap;">
+        <span style="font-weight:500; color:#3b3b5c;">
+            เข้าสู่ระบบแล้ว: {{ session.get('username') }} ({{ session.get('role') }})
+        </span>
+        <a class="btn" href="{{ url_for('logout') }}" style="padding:8px 24px; min-width:120px;"><i class="fa-solid fa-right-from-bracket"></i> ออกจากระบบ</a>
+        <a class="btn" href="/edit_profile" style="padding:8px 24px; min-width:120px;"><i class="fa-solid fa-user-pen"></i> แก้ไขข้อมูลส่วนตัว</a>
+        {% if session.get('role') == 'customer' %}
+            <a class="btn" href="{{ url_for('my_orders') }}" style="padding:8px 24px; min-width:120px;"><i class="fa-solid fa-list"></i> ดูคำสั่งซื้อของฉัน</a>
+            <a class="btn" href="/order_history" style="padding:8px 24px; min-width:120px;"><i class="fa-solid fa-clock-rotate-left"></i> ประวัติการสั่งซื้อ</a>
+        {% endif %}
+    </div>
+    {% else %}
+        <div class="navbar" style="justify-content: center; gap: 32px;">
+            <a class="btn btn-block" href="/register" style="color:#fff; font-size:1.08em;">
+                <i class="fa-solid fa-user-plus"></i> สมัครสมาชิก
+            </a>
+            <a class="btn btn-block" href="/login" style="color:#fff; font-size:1.08em;">
+                <i class="fa-solid fa-right-to-bracket"></i> เข้าสู่ระบบ
+            </a>
+        </div>
+    {% endif %}
+    <hr>
+    <div class="navbar">
+        <a class="btn" href="/search" style="color:#fff;">
+            <i class="fa-solid fa-magnifying-glass"></i> ค้นหาหนังสือ
+        </a>
+        {% if session.get('role') == 'seller' %}
+            <a class="btn" href="/add_book" style="color:#fff;">เพิ่มหนังสือเพื่อขาย</a>
+            <a class="btn" href="/seller_orders" style="color:#fff;">ดูการสั่งซื้อหนังสือ</a>
+            <a class="btn" href="/sales_history" style="color:#fff;">ประวัติการขาย</a>
+        {% endif %}
+    </div>
+    <h2>รายการหนังสือทั้งหมด</h2>
+    <div id="results">
+        {% if books %}
+            <ul>
+            {% for book in books %}
+                <li>
+                    <img src="{{ book.image_url }}" alt="รูปหนังสือ" width="80">
+                    <strong>{{ book.title }}</strong> โดย {{ book.author }}<br>
+                    {{ book.description }}<br>
+                    <span>รายละเอียดหนังสือ: {{ book.description }}</span>
+                    <span>ผู้ขาย: {{ book.seller_name }}</span>
+                    {% if session.get('role') == 'seller' and session.get('user_id') == book.get('sellerid') %}
+                        <form method="post" action="/delete_book/{{ book.id }}" style="display:inline;">
+                            <button type="submit" onclick="return confirm('ยืนยันการลบหนังสือเล่มนี้?')">ยกเลิกการขาย</button>
+                        </form>
+                    {% elif session.get('role') == 'customer' and session.get('user_id') %}
+                        <a class="btn" href="/order/{{ book.id }}" style="font-size:1.08em; padding:8px 24px; margin-top:8px; display:inline-block;">
+                            <i class="fa-solid fa-cart-shopping"></i> สั่งซื้อ
+                        </a>
+                    {% endif %}
+                </li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>ยังไม่มีหนังสือในระบบ</p>
+        {% endif %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <title>ประวัติการขาย</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <a class="btn" href="{{ url_for('index') }}" style="color:#fff; margin-bottom:16px; margin-left:24px; margin-top:24px;">หน้าแรก</a>
+    <h2>ประวัติการขาย</h2>
+    {% if orders %}
+        <table border="0" cellpadding="6">
+            <tr>
+                <th>เลขที่คำสั่งซื้อ</th>
+                <th>ชื่อหนังสือ</th>
+                <th>ผู้ซื้อ</th>
+                <th>ที่อยู่จัดส่ง</th>
+                <th>สถานะ</th>
+                <th>เลขพัสดุ</th>
+            </tr>
+            {% for order in orders %}
+            <tr>
+                <td>{{ order.id }}</td>
+                <td>{{ order.title }}</td>
+                <td>{{ order.buyer_name }}</td>
+                <td>{{ order.address }}</td>
+                <td>{{ order.status }}</td>
+                <td>{{ order.tracking }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>ยังไม่มีประวัติการขาย</p>
+    {% endif %}
+</body>
+</html>

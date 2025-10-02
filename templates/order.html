@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <title>สั่งซื้อหนังสือ</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <a class="btn" href="{{ url_for('index') }}" style="color:#fff; margin-bottom:16px; margin-left:24px; margin-top:24px;">หน้าแรก</a>
+    <h2>สั่งซื้อหนังสือ</h2>
+    <form method="post">
+        <label>ชื่อหนังสือ:</label> {{ book.title }}<br>
+        <label>ที่อยู่สำหรับจัดส่ง:</label><br>
+        <textarea name="address" required rows="3" cols="40"></textarea><br><br>
+        <button type="submit">ยืนยันการสั่งซื้อ</button>
+    </form>
+</body>
+</html>

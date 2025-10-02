@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <title>คำสั่งซื้อของฉัน</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <a class="btn" href="{{ url_for('index') }}" style="color:#fff; margin-bottom:16px; margin-left:24px; margin-top:24px;">หน้าแรก</a>
+    <h2>คำสั่งซื้อหนังสือของฉัน</h2>
+    {% if orders %}
+        <table border="0" cellpadding="6">
+            <tr>
+                <th>เลขที่คำสั่งซื้อ</th>
+                <th>ชื่อหนังสือ</th>
+                <th>ผู้ซื้อ</th>
+                <th>ที่อยู่จัดส่ง</th>
+                <th>สถานะ</th>
+                <th>เลขพัสดุ</th>
+                <th>อัปเดต</th>
+            </tr>
+            {% for order in orders %}
+            <tr>
+                <form method="post">
+                <td>{{ order.id }}<input type="hidden" name="order_id" value="{{ order.id }}"></td>
+                <td>{{ order.title }}</td>
+                <td>{{ order.buyer_name }}</td>
+                <td>{{ order.address }}</td>
+                <td>
+                    <select name="status">
+                        <option value="รอดำเนินการ" {% if order.status == 'รอดำเนินการ' %}selected{% endif %}>รอดำเนินการ</option>
+                        <option value="จัดส่งแล้ว" {% if order.status == 'จัดส่งแล้ว' %}selected{% endif %}>จัดส่งแล้ว</option>
+                        <option value="ยกเลิก" {% if order.status == 'ยกเลิก' %}selected{% endif %}>ยกเลิก</option>
+                        <!-- ไม่แสดง 'จัดส่งสำเร็จ' ใน dropdown เพื่อให้ข้อมูลที่สำเร็จแล้วถูกย้ายไปหน้าประวัติการขาย -->
+                    </select>
+                </td>
+                <td><input type="text" name="tracking" value="{{ order.tracking }}" placeholder="เลขพัสดุ"></td>
+                <td><button type="submit">บันทึก</button></td>
+                </form>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>ยังไม่มีคำสั่งซื้อสำหรับหนังสือของคุณ</p>
+    {% endif %}
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <title>เข้าสู่ระบบ</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <a class="btn" href="{{ url_for('index') }}" style="color:#fff; margin-bottom:16px; margin-left:24px; margin-top:24px;">หน้าแรก</a>
+    <h2 style="margin-bottom: 32px;">เข้าสู่ระบบ</h2>
+    <div class="login-container">
+        <form method="post" class="login-form">
+            <div class="form-group">
+                <label for="username">ชื่อผู้ใช้:</label>
+                <input type="text" name="username" id="username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">รหัสผ่าน:</label>
+                <input type="password" name="password" id="password" required>
+            </div>
+            <button type="submit" class="btn btn-block" style="font-size:1.15em;">เข้าสู่ระบบ</button>
+            {% if error %}
+            <div style="color: red; margin-top: 10px; text-align:center;">{{ error }}</div>
+            {% endif %}
+        </form>
+    </div>
+</body>
+</html>

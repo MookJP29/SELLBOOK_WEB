@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <title>เพิ่มหนังสือเพื่อขาย</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <a class="btn" href="{{ url_for('index') }}" style="color:#fff; margin-bottom:16px; margin-left:24px; margin-top:24px;">หน้าแรก</a>
+    <h2>เพิ่มหนังสือเพื่อขาย</h2>
+    <form method="post">
+        <label>ชื่อหนังสือ:</label><br>
+        <input type="text" name="title" required><br><br>
+        <label>ผู้แต่ง:</label><br>
+        <input type="text" name="author"><br><br>
+        <label>รายละเอียด:</label><br>
+        <textarea name="description" rows="3" cols="40"></textarea><br><br>
+        <label>ลิงก์รูปภาพ:</label><br>
+        <input type="text" name="image_url"><br><br>
+        <label>ราคา:</label><br>
+        <input type="number" name="price" required><br><br>
+        <button type="submit">เพิ่มหนังสือ</button>
+    </form>
+</body>
+</html>

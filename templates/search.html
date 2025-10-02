@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <title>ค้นหาหนังสือ</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <a class="btn" href="{{ url_for('index') }}" style="color:#fff; margin-bottom:16px; margin-left:24px; margin-top:24px;">หน้าแรก</a>
+    <h2>ค้นหาหนังสือ</h2>
+    <form method="get">
+        <input type="text" name="q" placeholder="ชื่อหนังสือหรือผู้แต่ง">
+        <button type="submit">ค้นหา</button>
+    </form>
+    <div id="results">
+        {% if books %}
+            <ul>
+            {% for book in books %}
+                <li>
+                    <img src="{{ book.image_url }}" alt="รูปหนังสือ" width="80">
+                    <strong>{{ book.title }}</strong> โดย {{ book.author }}<br>
+                    {{ book.description }}<br>
+                        {% if session.get('role') == 'seller' and session.get('user_id') == book.get('sellerid') %}
+                            <form method="post" action="{{ url_for('delete_book', book_id=book.id) }}" style="display:inline;">
+                                <button type="submit" onclick="return confirm('ยืนยันการยกเลิกการขายหนังสือเล่มนี้?')">ยกเลิกการขาย</button>
+                            </form>
+                        {% elif session.get('role') == 'customer' and session.get('user_id') %}
+                            <a href="/order/{{ book.id }}">สั่งซื้อ</a>
+                        {% else %}
+                            <span style="color:gray;">เข้าสู่ระบบเพื่อสั่งซื้อ</span>
+                        {% endif %}
+                </li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+</body>
+</html>
